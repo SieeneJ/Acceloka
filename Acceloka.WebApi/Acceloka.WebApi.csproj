@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>4eebaa94-20f3-4900-bf1c-02046fda2517</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Acceloka.Contracts\Acceloka.Contracts.csproj" />
+    <ProjectReference Include="..\Acceloka.Commons\Acceloka.Commons.csproj" />
+    <ProjectReference Include="..\Acceloka.Entities\Acceloka.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
