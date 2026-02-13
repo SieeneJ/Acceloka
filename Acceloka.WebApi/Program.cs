@@ -1,5 +1,6 @@
 using Acceloka.Commons.Behaviors;
 using Acceloka.Commons.Exceptions;
+using Acceloka.Commons.Infrastructure;
 using Acceloka.Commons.RequestHandlers.Tickets;
 using Acceloka.Commons.Utils;
 using Acceloka.Commons.Validators;
@@ -59,6 +60,9 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<AccelokaContext>();
+    await DbInitializer.InitializeAsync(context);
 }
 
 app.UseAuthorization();
