@@ -13,5 +13,9 @@ public partial class BookedTicket
 
     public int Quantity { get; set; }
 
+    public int UserId { get; set; }
+
+    public virtual User UserNavigation { get; set; } = null!;
+
     public virtual Ticket TicketCodeNavigation { get; set; } = null!;
 }
