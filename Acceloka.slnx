@@ -1,6 +1,0 @@
-<Solution>
-  <Project Path="BackEnd/Acceloka.Commons/Acceloka.Commons.csproj" />
-  <Project Path="BackEnd/Acceloka.Contracts/Acceloka.Contracts.csproj" />
-  <Project Path="BackEnd/Acceloka.Entities/Acceloka.Entities.csproj" />
-  <Project Path="BackEnd/Acceloka.WebApi/Acceloka.WebApi.csproj" />
-</Solution>
