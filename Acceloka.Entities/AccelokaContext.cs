@@ -17,6 +17,8 @@ public partial class AccelokaContext : DbContext
 
     public virtual DbSet<Ticket> Tickets { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 
@@ -66,6 +68,15 @@ public partial class AccelokaContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("FK_Tickets_Category");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            // Makes the Email unique
+            entity.HasIndex(u => u.Email).IsUnique();
+
+            // Makes the Username unique
+            entity.HasIndex(u => u.Name).IsUnique();
         });
 
         OnModelCreatingPartial(modelBuilder);
