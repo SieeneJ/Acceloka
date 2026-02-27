@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Schibsted_Grotesk } from "next/font/google";
 
 const links = ["Search ticket", "My Booking"] as const;
 type NavLink = (typeof links)[number];
@@ -17,12 +16,10 @@ export default function AccelokaNavbar() {
     >
       {/* Pill Navbar */}
       <nav className="flex flex-1 items-center gap-2 rounded-full bg-white/90 px-5 py-2.5 shadow-lg backdrop-blur-md">
-        {/* Brand */}
         <span className="mr-2 text-3xl font-medium text-blue-600 tracking-tight whitespace-nowrap">
           Acceloka
         </span>
 
-        {/* Links */}
         <div className="flex flex-1 items-center justify-center gap-1">
           {links.map((link) => (
             <button
@@ -40,7 +37,6 @@ export default function AccelokaNavbar() {
         </div>
       </nav>
 
-      {/* Avatar — outside the pill */}
       <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-500 shadow transition-transform duration-200 hover:scale-105">
         <svg
           xmlns="http://www.w3.org/2000/svg"
