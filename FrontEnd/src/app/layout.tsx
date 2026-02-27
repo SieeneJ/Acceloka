@@ -6,7 +6,7 @@ import { Schibsted_Grotesk } from "next/font/google";
 const schibstedGrotesk = Schibsted_Grotesk({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-schibsted", // Optional: used for Tailwind integration
+  variable: "--font-schibsted",
 });
 
 export default function RootLayout({
