@@ -49,10 +49,20 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringDateTimeConverter());
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowNextJS",
+        policy => policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseCors("AllowNextJS");
 
 app.UseExceptionHandler();
 
