@@ -29,10 +29,6 @@ const Hero = () => {
           </h1>
         </div>
       </div>
-
-      <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-full max-w-6xl px-4 z-20">
-        <SearchCard />
-      </div>
     </section>
   );
 };
