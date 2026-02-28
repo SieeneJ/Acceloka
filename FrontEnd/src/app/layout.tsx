@@ -1,6 +1,6 @@
 import "./globals.css";
-import Hero from "../components/hero/hero";
-import Navbar from "../components/layouts/navbar";
+import Hero from "@/components/hero/hero";
+import Navbar from "@/components/layouts/navbar";
 import { Schibsted_Grotesk } from "next/font/google";
 
 const schibstedGrotesk = Schibsted_Grotesk({
@@ -17,15 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${schibstedGrotesk.variable}`}>
       <body className={`min-h-screen flex flex-col scroll-smooth`}>
-        <Hero />
         <header className="absolute top-0 left-0 w-full z-50">
           <Navbar />
         </header>
 
-        <main className="flex grow">
-          {children}
-        </main>
-
+        <main className="flex grow">{children}</main>
       </body>
     </html>
   );
