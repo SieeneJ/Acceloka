@@ -16,12 +16,14 @@ export default function TicketList({
   total,
   current,
   onPageChange,
+  onBook,
 }: {
   tickets: any[];
   loading: boolean;
   total: number;
   current: number;
   onPageChange: (page: number) => void;
+  onBook: (ticket: any) => void;
 }) {
   if (loading)
     return (
@@ -130,6 +132,7 @@ export default function TicketList({
                     className="bg-blue-600"
                     disabled={isSoldOut}
                     size="middle"
+                    onClick={() => onBook(ticket)}
                   >
                     {isSoldOut ? "Sold Out" : "Book Now"}
                   </Button>
@@ -144,7 +147,7 @@ export default function TicketList({
           <Pagination
             current={current}
             total={total}
-            pageSize={10} // IMPORTANT: Change this to whatever your backend "limit" is!
+            pageSize={10}
             onChange={onPageChange}
             showSizeChanger={false}
             align="center"
