@@ -2,6 +2,7 @@
 using Acceloka.Contracts.BookedTickets.DeleteBookedTicket;
 using Acceloka.Contracts.BookedTickets.GetBookedTicket;
 using Acceloka.Contracts.BookedTickets.UpdateBookedTicket;
+using Acceloka.Contracts.BookedTickets.GetAllBookedTicket;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,14 @@ namespace Acceloka.WebApi.Controllers
             request.BookedTicketId = bookedTicketId;
             var datas = await _mediator.Send(request);
             return Ok(datas);
+        }
+
+        [HttpGet("get-all-booked-ticket")]
+        public async Task<IActionResult> GetAllBookedTicket([FromQuery] int userId)
+        {
+            var query = new GetAllBookedTicketsRequest { UserId = userId };
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
             
     }

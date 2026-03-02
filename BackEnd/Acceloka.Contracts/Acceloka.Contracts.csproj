@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BookedTickets\GetAllBookedTicket\GetAllBookedTicketsRequest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="BookedTickets\GetAllBookedTicket\GetAllBookedTicketsRequest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
   </ItemGroup>
 
