@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from 'next/navigation';
+import Link from "next/link";
 
-const links = ["Search ticket", "My Booking"] as const;
-type NavLink = (typeof links)[number];
+const links = [
+  { label: "Search ticket", path: "/search" }, 
+  { label: "My Booking", path: "/booking" }
+];
 
 export default function AccelokaNavbar() {
-  const [active, setActive] = useState<NavLink>("Search ticket");
+  const pathname = usePathname();
 
   return (
     <div
@@ -20,20 +23,24 @@ export default function AccelokaNavbar() {
           Acceloka
         </span>
 
-        <div className="flex flex-1 items-center justify-center gap-1">
-          {links.map((link) => (
-            <button
-              key={link}
-              onClick={() => setActive(link)}
-              className={`rounded-full px-5 py-2 text-base font-semibold transition-all duration-200 ${
-                active === link
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-500 hover:bg-black/5 hover:text-gray-800"
-              }`}
-            >
-              {link}
-            </button>
-          ))}
+        <div className="flex flex-1 items-center justify-center gap-2 pr-20">
+          {links.map((link) => {
+            const isActive = pathname === link.path;
+
+            return (
+              <Link
+                key={link.path}
+                href={link.path}
+                className={`rounded-full px-5 py-2 text-base font-semibold transition-all duration-200 ${
+                  isActive
+                    ? "bg-blue-50 text-blue-600!"
+                    : "text-gray-500 hover:bg-black/5 hover:text-gray-800"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
       </nav>
 
