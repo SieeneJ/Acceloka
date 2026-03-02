@@ -1,13 +1,21 @@
 import "./globals.css";
 import Hero from "@/components/hero/hero";
 import Navbar from "@/components/layouts/navbar";
-import { Schibsted_Grotesk } from "next/font/google";
+import { Schibsted_Grotesk, Sora } from "next/font/google";
 
-const schibstedGrotesk = Schibsted_Grotesk({
+export const schibstedGrotesk = Schibsted_Grotesk({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-schibsted",
 });
+
+export const sora = Sora({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sora",
+});
+
+
 
 export default function RootLayout({
   children,
