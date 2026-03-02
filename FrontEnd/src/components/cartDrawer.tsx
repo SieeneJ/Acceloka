@@ -88,9 +88,9 @@ export default function CartDrawer({
               >
                 <List.Item.Meta
                   title={
-                    <h1 className="text-lg font-bold mb-0!">
+                    <p className="text-lg font-bold mb-0! font-xl">
                       {item.ticketName}
-                    </h1>
+                    </p>
                   }
                   description={
                     <div className="flex flex-col">
