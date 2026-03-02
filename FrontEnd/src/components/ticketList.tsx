@@ -1,14 +1,11 @@
 import React from "react";
-import { Tag, Button, Typography, Space, Spin, Empty, Pagination } from "antd";
+import { Tag, Button, Space, Spin, Empty, Pagination } from "antd";
 import {
   CalendarOutlined,
   InfoCircleOutlined,
   FireOutlined,
-  ClockCircleOutlined,
   BarcodeOutlined,
 } from "@ant-design/icons";
-
-const { Text, Title } = Typography;
 
 export default function TicketList({
   tickets,
@@ -44,98 +41,82 @@ export default function TicketList({
 
           return (
             <div
-              key={`${ticket.ticketId || ticket.Id || "ticket"}-${index}`}
-              className="bg-white rounded-lg border border-[#f0f0f0] shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col "
-              style={{ opacity: isSoldOut ? 0.7 : 1 }}
+              key={`${ticket.ticketCode || "ticket"}-${index}`}
+              className={`bg-white rounded-lg border border-[#f0f0f0] shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col ${isSoldOut ? "opacity-70" : ""}`}
             >
-              <div className="p-5 flex-1 flex flex-col">
-                <div className="flex justify-between mb-4 items-start gap-2">
-                  <Title
-                    level={4}
-                    style={{ margin: 0, fontWeight: 600, width: "70%" }}
-                  >
-                    {ticket.ticketName}
-                  </Title>
-                  <Tag
-                    color="blue"
-                    style={{ borderRadius: "4px", marginRight: 0 }}
-                  >
-                    {ticket.categoryName}
-                  </Tag>
-                </div>
-
-                <div className=" flex items-center">
-                  <BarcodeOutlined className="mr-2 text-gray-400" />
-                  <Text
-                    type="secondary"
-                    style={{ fontSize: "11px", fontFamily: "monospace" }}
-                  >
-                    {ticket.ticketCode || "N/A"}
-                  </Text>
-                </div>
-
-                <Space orientation="vertical" size={2} className="w-full mb-2">
-                  <Text
-                    type="secondary"
-                    style={{ fontSize: "12px" }}
-                    className="flex items-center"
-                  >
-                    <CalendarOutlined className="mr-2 text-blue-500" />
-                    {new Date(ticket.eventDate).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </Text>
-                </Space>
-
-                <div className=" mt-auto">
-                  {isSoldOut ? (
-                    <Tag
-                      color="default"
-                      className="w-full text-center py-1 font-bold"
-                    >
-                      SOLD OUT
+              <div className="flex  pl-2 bg-linear-to-b from-blue-500 to-blue-200 ">
+                <div className="p-5 flex-1 flex flex-col bg-white">
+                  <div className="flex justify-between mb-2 items-start gap-2">
+                    <p className="m-0! font-semibold w-70% text-lg">
+                      {ticket.ticketName}
+                    </p>
+                    <Tag color="blue" className="rounded-sm mr-0! font-bold!">
+                      {ticket.categoryName}
                     </Tag>
-                  ) : isLowStock ? (
-                    <Tag
-                      color="volcano"
-                      className="w-full text-center py-1 font-bold border-none"
-                      style={{ backgroundColor: "#fff2e8" }}
-                    >
-                      <FireOutlined /> ONLY {remaining} TICKETS LEFT!
-                    </Tag>
-                  ) : (
-                    <div className="flex items-center text-gray-500 text-xs">
-                      <InfoCircleOutlined className="mr-2 text-blue-400" />
-                      <Text type="secondary">
-                        {remaining} tickets available
-                      </Text>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex justify-between items-center border-t border-gray-100">
-                  <div className="flex flex-col">
-                    <Text
-                      type="secondary"
-                      className="text-[11px] uppercase tracking-wider"
-                    >
-                      Price
-                    </Text>
-                    <Text strong className="text-blue-600 text-lg">
-                      IDR {ticket.price?.toLocaleString()}
-                    </Text>
                   </div>
-                  <Button
-                    type="primary"
-                    className="bg-blue-600"
-                    disabled={isSoldOut}
-                    size="middle"
-                    onClick={() => onBook(ticket)}
-                  >
-                    {isSoldOut ? "Sold Out" : "Book Now"}
-                  </Button>
+
+                  <div className=" flex items-center">
+                    <BarcodeOutlined className="mr-2 text-gray-500!" />
+                    <p className="text-xs mb-0! text-gray-600 italic">
+                      {ticket.ticketCode || "N/A"}
+                    </p>
+                  </div>
+
+                  <Space orientation="vertical" size={2} className="w-full mb-2">
+                    <p className="flex text-xs mb-0! text-gray-500">
+                      <CalendarOutlined className="mr-2 w-4" />
+                      {new Date(ticket.eventDate).toLocaleDateString("en-EN", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </Space>
+
+                  <div className=" mt-auto">
+                    {isSoldOut ? (
+                      <Tag
+                        color="default"
+                        className="w-full text-center py-1 font-bold"
+                      >
+                        SOLD OUT
+                      </Tag>
+                    ) : isLowStock ? (
+                      <Tag
+                        color="volcano"
+                        className="w-full text-center py-1 font-bold border-none bg-orange-50"
+                      >
+                        <FireOutlined /> ONLY {remaining} TICKETS LEFT!
+                      </Tag>
+                    ) : (
+                      <div className="flex items-center text-gray-500 text-xs mb-1">
+                        <InfoCircleOutlined className="mr-2 text-blue-400" />
+                        <p className="mb-0! text-gray-700">
+                          {remaining} tickets available
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex justify-between items-center border-t border-dashed border-gray-300">
+                    <div className="flex flex-col">
+                      <p className="text-xs uppercase tracking-wider mt-1! mb-0! text-gray-500">
+                        Price
+                      </p>
+                      <p className="text-blue-600 text-lg font-semibold mb-0!">
+                        IDR {ticket.price?.toLocaleString()}
+                      </p>
+                    </div>
+                    <Button
+                      type="primary"
+                      className="bg-orange-600! hover:bg-orange-700! transition-colors font-bold!"
+                      disabled={isSoldOut}
+                      size="middle"
+                      onClick={() => onBook(ticket)}
+                    >
+                      {isSoldOut ? "Sold Out" : "Book Now"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
