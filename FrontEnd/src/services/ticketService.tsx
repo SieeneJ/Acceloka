@@ -13,10 +13,11 @@ export const formatTicketParams = (values: any) => {
   };
 };
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export const fetchAvailableTickets = async (params: any) => {
   const queryString = new URLSearchParams(params).toString();
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  
+
   const response = await fetch(
     `${baseUrl}/api/v1/get-available-ticket?${queryString}`,
     {
@@ -24,6 +25,55 @@ export const fetchAvailableTickets = async (params: any) => {
       headers: { Accept: "application/json" },
     }
   );
-  
+
   return response;
 };
+
+export const postBuyTicket = async (cartItems: any[]) => {
+  const userId =
+    typeof window !== "undefined" ? sessionStorage.getItem("userId") : null;
+
+  const payload = {
+    userId: userId ? parseInt(userId) : 0,
+    bookings: cartItems,
+  };
+
+  const response = await fetch(`${baseUrl}/api/v1/book-ticket`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return response;
+};
+
+export const updateBooking = async (bookingId: string, updatingList: { ticketCode: string, quantity: number }[]) => {
+  const payLoad = {
+    updating: updatingList
+  };
+
+  const response = await fetch(`${baseUrl}/api/v1/edit-booked-ticket/${bookingId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(payLoad),
+  });
+
+  return response;
+}
+
+export const deleteBooking = async (bookingId: string, kodeTicket: string, qty: number) => {
+  const response = await fetch(`${baseUrl}/api/v1/revoke-ticket/${bookingId}/${kodeTicket}/${qty}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  return response
+}
