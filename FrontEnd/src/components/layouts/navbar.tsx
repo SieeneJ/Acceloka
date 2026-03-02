@@ -1,15 +1,52 @@
 "use client";
 
-import { usePathname } from 'next/navigation';
+import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
+import AuthModal from "../authModal";
+import { useAuth } from "@/hooks/useAuth";
+import Dropdown from "antd/es/dropdown/dropdown";
+import UserOutlined from "@ant-design/icons/lib/icons/UserOutlined";
+import { MenuProps } from "antd/es/menu/menu";
+import HistoryOutlined from "@ant-design/icons/lib/icons/HistoryOutlined";
+import LogoutOutlined from "@ant-design/icons/lib/icons/LogoutOutlined";
 
 const links = [
-  { label: "Search ticket", path: "/search" }, 
-  { label: "My Booking", path: "/booking" }
+  { label: "Search ticket", path: "/search" },
+  { label: "My Booking", path: "/booking" },
 ];
 
 export default function AccelokaNavbar() {
   const pathname = usePathname();
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const { isLoggedIn, logout, checkAuth } = useAuth();
+
+  const handleUserClick = () => {
+    if (isLoggedIn) {
+      window.location.href = "/booking";
+    } else {
+      setIsAuthOpen(true);
+    }
+  };
+
+  const userMenuItems: MenuProps["items"] = [
+    {
+      key: "1",
+      label: "My Bookings",
+      icon: <HistoryOutlined />,
+      onClick: () => (window.location.href = "/booking"),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "2",
+      label: "Logout",
+      icon: <LogoutOutlined />,
+      danger: true,
+      onClick: () => logout(),
+    },
+  ];
 
   return (
     <div
@@ -44,21 +81,29 @@ export default function AccelokaNavbar() {
         </div>
       </nav>
 
-      <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-500 shadow transition-transform duration-200 hover:scale-105">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      {isLoggedIn ? (
+        <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" arrow>
+          <button
+            style={{ backgroundColor: "#dcfce7" }}
+            className="h-10 w-10 rounded-full  cursor-pointer border-none"
+          >
+            <UserOutlined className="flex items-center h-10 w-10 rounded-full text-lg" />
+          </button>
+        </Dropdown>
+      ) : (
+        <button
+          onClick={() => setIsAuthOpen(true)}
+          className="h-10 w-10 bg-blue-100 rounded-full cursor-pointer border-none"
         >
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      </button>
+          <UserOutlined className="rounded-full text-lg" />
+        </button>
+      )}
+
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        onLoginSuccess={checkAuth}
+      />
     </div>
   );
 }

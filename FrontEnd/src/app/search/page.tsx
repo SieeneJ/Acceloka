@@ -9,6 +9,7 @@ import { FormInstance, Form, message } from "antd";
 import {
   formatTicketParams,
   fetchAvailableTickets,
+  postBuyTicket,
 } from "@/services/ticketService";
 import { handleBackendValidationErrors } from "@/utils/formHelpers";
 import CartButton from "@/components/cartButton";
@@ -19,14 +20,34 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const { cart, isCartOpen, setIsCartOpen, addToCart, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { cart, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, clearCart, addToCart} = useCart();
+  const [cartItems, setCartItems] = useState<any[]>([]);
 
-  const handleCheckout = () => {
-    message.success('Order placed successfully! Redirecting to payment...');
+  const handleCheckout = async () => {
+    if (cart.length === 0) {
+      message.warning("Cart is Empty!");
+      return;
+    }
 
-    setIsCartOpen(false);
+    const bookingsPayload = cart.map(item => ({
+      ticketCode: item.ticketCode,
+      quantity: item.quantity
+    }));
+    try {
+      const response = await postBuyTicket(bookingsPayload); 
 
-    clearCart(); 
+      if (response.ok) {
+        message.success("Ticket have been booked!!");
+        clearCart();
+        setIsCartOpen(false);
+      } else {
+        const errorData = await response.json();
+        message.error(errorData.message || "Fail to book ticket");
+      }
+    } catch (error) {
+      message.error("Network error");
+      console.error(error);
+    }
   };
 
   const handleFetchTickets = useCallback(
