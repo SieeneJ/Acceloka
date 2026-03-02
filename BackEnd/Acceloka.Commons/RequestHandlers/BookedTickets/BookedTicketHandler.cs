@@ -77,6 +77,7 @@ namespace Acceloka.Commons.RequestHandlers.BookedTickets
                     BookedTicketId = bookingGroupId,
                     TicketCode = ticket.TicketCode,
                     Quantity = item.Quantity,
+                    UserId = request.UserId,
                 });
             }
 
