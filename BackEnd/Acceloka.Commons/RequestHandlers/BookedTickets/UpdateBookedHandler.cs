@@ -41,16 +41,18 @@ namespace Acceloka.Commons.RequestHandlers.BookedTickets
                     failures.Add(new ValidationFailure(item.TicketCode, "Kode tiket tidak terdaftar"));
                     continue;
                 }
-                else
+
+                int delta = item.Quantity - ticket.Quantity;
+
+                if (delta > 0 && ticket.TicketCodeNavigation.Quota < delta)
                 {
-                    if (ticket.Quantity < item.Quantity)
-                    {
-                        failures.Add(new ValidationFailure(item.TicketCode, "Quantity tiket yang tersedia tidak mencukupi"));
-                    }
+                    failures.Add(new ValidationFailure(item.TicketCode, $"Kuota tidak mencukupi untuk menambah {delta} tiket. Sisa kuota master: {ticket.TicketCodeNavigation.Quota}"));
+                    continue;
                 }
 
+                ticket.TicketCodeNavigation.Quota -= delta;
 
-                ticket.Quantity += item.Quantity;
+                ticket.Quantity = item.Quantity;
 
                 ticket.TicketCodeNavigation.Quota -= item.Quantity;
 
