@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer, List, Button, Space } from "antd";
+import { Drawer, Button, Space, Empty } from "antd";
 import {
   ShoppingCartOutlined,
   DeleteOutlined,
@@ -51,61 +51,63 @@ export default function CartDrawer({
       size={450}
     >
       <div className="flex flex-col h-full">
-        <div className="flex-1 flex-col overflow-y-auto p-4">
-          <List
-            itemLayout="horizontal"
-            dataSource={items}
-            renderItem={(item, index) => (
-              <List.Item
-                className="relative"
-                actions={[
-                  <div key="actions" className="flex flex-col items-end">
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+          {items.length > 0 ? (
+            items.map((item, index) => (
+              <div 
+                key={`${item.ticketCode}-${index}`}
+                className="flex justify-between items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="flex-1">
+                  <h4 className="text-base font-bold text-gray-800 mb-0!">
+                    {item.ticketName}
+                  </h4>
+                  <p className="text-xs text-gray-500 font-semibold mb-2">
+                    {item.categoryName}
+                  </p>
+                  <p className="text-lg font-bold text-blue-600 mb-0!">
+                    IDR {item.price.toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-end gap-5 ml-4">
+                  <Button
+                    type="text"
+                    danger
+                    size="small"
+                    icon={<DeleteOutlined />}
+                    onClick={() => onRemove(index)}
+                    className="hover:bg-red-50 rounded-full"
+                  />
+
+                  <div className="flex items-center bg-gray-100 rounded-lg p-1 border border-gray-200">
                     <Button
                       type="text"
-                      danger
                       size="small"
-                      icon={<DeleteOutlined />}
-                      onClick={() => onRemove(index)}
-                      className="hover:bg-red-50"
+                      icon={<MinusOutlined />}
+                      onClick={() => onUpdateQuantity(index, -1)}
+                      disabled={item.quantity <= 1}
+                      className="flex items-center justify-center"
                     />
-
-                    <Space className="bg-gray-50 p-1 rounded-lg">
-                      <Button
-                        size="small"
-                        icon={<MinusOutlined />}
-                        onClick={() => onUpdateQuantity(index, -1)}
-                        disabled={item.quantity <= 1}
-                      />
-                      <p className="w-4 mb-0!">{item.quantity}</p>
-                      <Button
-                        size="small"
-                        icon={<PlusOutlined />}
-                        onClick={() => onUpdateQuantity(index, 1)}
-                      />
-                    </Space>
-                  </div>,
-                ]}
-              >
-                <List.Item.Meta
-                  title={
-                    <p className="text-lg font-bold mb-0! font-xl">
-                      {item.ticketName}
-                    </p>
-                  }
-                  description={
-                    <div className="flex flex-col">
-                      <p className="text-sm text-gray-500 mb-0! font-semibold">
-                        {item.categoryName}
-                      </p>
-                      <p className="font-semibold text-blue-600 text-xl">
-                        IDR {item.price.toLocaleString()}
-                      </p>
-                    </div>
-                  }
-                />
-              </List.Item>
-            )}
-          />
+                    <span className="w-8 text-center font-bold text-gray-700">
+                      {item.quantity}
+                    </span>
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<PlusOutlined />}
+                      onClick={() => onUpdateQuantity(index, 1)}
+                      className="flex items-center justify-center"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="h-full flex items-center justify-center">
+              <Empty description="Your cart is empty" />
+            </div>
+          )}
         </div>
 
         <div className="p-6 bg-white border-t border-gray-100 shadow-md">
