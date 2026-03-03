@@ -29,6 +29,13 @@ export default function SearchPage() {
       return;
     }
 
+    const userId = sessionStorage.getItem("userId");
+
+    if (!userId) {
+    message.error("Please login first to book a ticket!");
+    return;
+  }
+
     const bookingsPayload = cart.map(item => ({
       ticketCode: item.ticketCode,
       quantity: item.quantity
