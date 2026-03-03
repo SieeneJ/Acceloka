@@ -22,6 +22,8 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
   const [loading, setLoading] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  const [loginForm] = Form.useForm();
+  const [registerForm] = Form.useForm();
 
   const onLogin = async (values: any) => {
     setLoading(true);
@@ -59,8 +61,9 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
 
       if (response.ok) {
         message.success("Registration successful! Please login.");
+        registerForm.resetFields();
       } else {
-        message.error("Registration failed. User might already exist.");
+        message.error("Registration failed.");
       }
     } catch (error) {
       message.error("Failed to register.");
@@ -93,12 +96,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
             key: "1",
             label: <span className="font-bold tracking-wider px-4">LOGIN</span>,
             children: (
-              <Form onFinish={onLogin} layout="vertical" className="mt-4">
+              <Form form={loginForm} onFinish={onLogin} layout="vertical" className="mt-4" autoComplete="off">
                 <Form.Item name="username" rules={[{ required: true }]}>
                   <Input
                     prefix={<UserOutlined />}
                     placeholder="Username"
                     size="large"
+                    autoComplete="one-time-code"
                   />
                 </Form.Item>
                 <Form.Item name="password" rules={[{ required: true }]}>
@@ -106,6 +110,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                     prefix={<LockOutlined />}
                     placeholder="Password"
                     size="large"
+                    autoComplete="new-password"
                   />
                 </Form.Item>
                 <Button
@@ -127,12 +132,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
               <span className="font-bold tracking-wider px-4">SIGN UP</span>
             ),
             children: (
-              <Form onFinish={onRegister} layout="vertical" className="mt-4">
+              <Form form={registerForm} onFinish={onRegister} layout="vertical" className="mt-4" autoComplete="off">
                 <Form.Item name="fullName" rules={[{ required: true }]}>
                   <Input
                     prefix={<IdcardOutlined />}
                     placeholder="Full Name"
                     size="large"
+                    autoComplete="off"
                   />
                 </Form.Item>
                 <Form.Item name="username" rules={[{ required: true }]}>
@@ -140,6 +146,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                     prefix={<UserOutlined />}
                     placeholder="Username"
                     size="large"
+                    autoComplete="one-time-code"
                   />
                 </Form.Item>
                 <Form.Item
@@ -150,6 +157,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                     prefix={<MailOutlined />}
                     placeholder="Email"
                     size="large"
+                    autoComplete="off"
                   />
                 </Form.Item>
                 <Form.Item name="password" rules={[{ required: true, min: 6 }]}>
@@ -157,6 +165,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                     prefix={<LockOutlined />}
                     placeholder="Password"
                     size="large"
+                    autoComplete="new-password"
                   />
                 </Form.Item>
                 <Button
