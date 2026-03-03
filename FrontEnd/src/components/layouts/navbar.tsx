@@ -87,7 +87,7 @@ export default function AccelokaNavbar() {
             style={{ backgroundColor: "#dcfce7" }}
             className="h-10 w-10 rounded-full  cursor-pointer border-none"
           >
-            <UserOutlined className="flex items-center h-10 w-10 rounded-full text-lg" />
+            <UserOutlined className="flex items-center h-10 w-10 rounded-full text-lg text-black!" />
           </button>
         </Dropdown>
       ) : (
@@ -95,7 +95,7 @@ export default function AccelokaNavbar() {
           onClick={() => setIsAuthOpen(true)}
           className="h-10 w-10 bg-blue-100 rounded-full cursor-pointer border-none"
         >
-          <UserOutlined className="rounded-full text-lg" />
+          <UserOutlined className="rounded-full text-lg text-black!" />
         </button>
       )}
 
