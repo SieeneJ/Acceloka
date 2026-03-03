@@ -11,6 +11,7 @@ import {
 import { Sora } from "next/font/google";
 import { message, Spin } from "antd";
 import { useRouter } from "next/navigation";
+import { getBookedTickets } from "@/services/ticketService";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -44,27 +45,27 @@ export default function BookingPage() {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
 
   const fetchMyBookings = async () => {
+    const userId = sessionStorage.getItem("userId");
+    
+    if (!userId) {
+      message.warning("Login first!");
+      setBookingGroups([]);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
-      const userId = sessionStorage.getItem("userId");
+      const response = await getBookedTickets(userId);
 
-      if (!userId) {
-        message.warning("Login first!");
+      if (response && response.ok) {
+        const result = await response.json();
+        setBookingGroups(result || []);
+      } else {
         setBookingGroups([]);
-        return;
       }
-
-      const response = await fetch(
-        `${baseUrl}/api/v1/get-all-booked-ticket?userId=${userId}`,
-      );
-      if (!response.ok) throw new Error("Failed to get data.");
-
-      const result = await response.json();
-
-      setBookingGroups(result || []);
     } catch (error) {
-      console.error("Error:", error);
-      message.error("Failed to load data.");
+       console.error(error);
     } finally {
       setLoading(false);
     }
@@ -122,7 +123,7 @@ export default function BookingPage() {
                     }))
                   }
                 >
-                  {openGroups[group.bookedTicketId] !== false ? (
+                  {openGroups[group.bookedTicketId] === true ? (
                     <UpCircleFilled className="text-white!" />
                   ) : (
                     <DownCircleFilled className="text-white!" />

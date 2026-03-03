@@ -30,30 +30,17 @@ export default function SearchPage() {
     }
 
     const userId = sessionStorage.getItem("userId");
-
     if (!userId) {
-    message.error("Please login first to book a ticket!");
-    return;
-  }
+      message.error("Please login first to book a ticket!");
+      return;
+    }
 
-    const bookingsPayload = cart.map(item => ({
-      ticketCode: item.ticketCode,
-      quantity: item.quantity
-    }));
-    try {
-      const response = await postBuyTicket(bookingsPayload); 
+    const response = await postBuyTicket(cart);
 
-      if (response.ok) {
-        message.success("Ticket have been booked!!");
-        clearCart();
-        setIsCartOpen(false);
-      } else {
-        const errorData = await response.json();
-        message.error(errorData.message || "Fail to book ticket");
-      }
-    } catch (error) {
-      message.error("Network error");
-      console.error(error);
+    if (response && response.ok) {
+      message.success("Tickets have been booked!!");
+      clearCart();
+      setIsCartOpen(false);
     }
   };
 
@@ -64,24 +51,20 @@ export default function SearchPage() {
 
       const params = formatTicketParams(values);
       params.PageNumber = page;
-      try {
-        const response = await fetchAvailableTickets(params);
 
-        if (!response.ok) {
-          await handleBackendValidationErrors(response, form);
-          setTickets([]);
-          setTotalCount(0);
-          return;
-        }
+      const response = await fetchAvailableTickets(params);
 
+      if (response && response.ok) {
         const data = await response.json();
         setTickets(data.tickets || data);
         setTotalCount(data.totalTickets || 0);
-      } catch (error) {
-        console.error("Network/Connection Error:", error);
-      } finally {
-        setLoading(false);
+      } else if (response) {
+        await handleBackendValidationErrors(response, form);
+        setTickets([]);
+        setTotalCount(0);
       }
+
+      setLoading(false);
     },
     [],
   );
@@ -122,9 +105,9 @@ export default function SearchPage() {
         onClick={() => setIsCartOpen(true)} 
       />
 
-      <CartDrawer 
-        open={isCartOpen} 
-        onClose={() => setIsCartOpen(false)} 
+      <CartDrawer
+        open={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
         items={cart}
         onUpdateQuantity={updateQuantity}
         onRemove={removeFromCart}

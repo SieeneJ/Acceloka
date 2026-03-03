@@ -1,4 +1,5 @@
-// src/services/ticketService.ts
+import { request } from "@/utils/apiClient";
+
 export const formatTicketParams = (values: any) => {
   return {
     TicketName: values?.search || "",
@@ -18,62 +19,39 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 export const fetchAvailableTickets = async (params: any) => {
   const queryString = new URLSearchParams(params).toString();
 
-  const response = await fetch(
-    `${baseUrl}/api/v1/get-available-ticket?${queryString}`,
-    {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    }
-  );
-
-  return response;
+  return request(`/api/v1/get-available-ticket?${queryString}`, { method: "GET" });
 };
 
 export const postBuyTicket = async (cartItems: any[]) => {
   const userId =
     typeof window !== "undefined" ? sessionStorage.getItem("userId") : null;
 
-  const payload = {
-    userId: userId ? parseInt(userId) : 0,
-    bookings: cartItems,
-  };
-
-  const response = await fetch(`${baseUrl}/api/v1/book-ticket`, {
+  return request(`/api/v1/book-ticket`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      userId: userId ? parseInt(userId) : 0,
+      bookings: cartItems,
+    }),
   });
+};
 
-  return response;
+export const getBookedTickets = async (userId: string) => {
+  return request(`/api/v1/get-all-booked-ticket?userId=${userId}`, {
+    method: "GET"
+  });
 };
 
 export const updateBooking = async (bookingId: string, updatingList: { ticketCode: string, quantity: number }[]) => {
-  const payLoad = {
-    updating: updatingList
-  };
-
-  const response = await fetch(`${baseUrl}/api/v1/edit-booked-ticket/${bookingId}`, {
+  return request(`/api/v1/edit-booked-ticket/${bookingId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(payLoad),
+    body: JSON.stringify({ 
+      updating: updatingList 
+    }),
   });
-
-  return response;
 }
 
 export const deleteBooking = async (bookingId: string, kodeTicket: string, qty: number) => {
-  const response = await fetch(`${baseUrl}/api/v1/revoke-ticket/${bookingId}/${kodeTicket}/${qty}`, {
+  return request(`/api/v1/revoke-ticket/${bookingId}/${kodeTicket}/${qty}`, {
     method: "DELETE",
-    headers: {
-      Accept: "application/json",
-    },
   });
-
-  return response
 }

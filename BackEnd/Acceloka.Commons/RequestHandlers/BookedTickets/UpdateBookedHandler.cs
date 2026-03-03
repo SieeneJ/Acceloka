@@ -46,7 +46,7 @@ namespace Acceloka.Commons.RequestHandlers.BookedTickets
 
                 if (delta > 0 && ticket.TicketCodeNavigation.Quota < delta)
                 {
-                    failures.Add(new ValidationFailure(item.TicketCode, $"Kuota tidak mencukupi untuk menambah {delta} tiket. Sisa kuota master: {ticket.TicketCodeNavigation.Quota}"));
+                    failures.Add(new ValidationFailure(item.TicketCode, $"Kuota tidak mencukupi untuk menambah {delta} tiket. Sisa kuota: {ticket.TicketCodeNavigation.Quota}"));
                     continue;
                 }
 

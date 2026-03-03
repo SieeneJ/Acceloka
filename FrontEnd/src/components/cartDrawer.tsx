@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 
 interface CartItem {
-  ticketId: string | number;
+  ticketCode: string | number;
   ticketName: string;
   categoryName: string;
   price: number;
@@ -21,13 +21,13 @@ interface CartDrawerProps {
   items: CartItem[];
   onUpdateQuantity: (index: number, delta: number) => void;
   onRemove: (index: number) => void;
-  onCheckout: () => void;
+  onCheckout: () => Promise<void>;
 }
 
 export default function CartDrawer({
   open,
   onClose,
-  items,
+  items = [],
   onUpdateQuantity,
   onRemove,
   onCheckout,

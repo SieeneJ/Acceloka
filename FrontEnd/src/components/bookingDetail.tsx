@@ -16,7 +16,7 @@ interface TicketDetail {
 interface BookingDetailProps {
   dataSource: any[];
   bookedTicketId: string;
-  onRefresh: () => void; 
+  onRefresh: () => void;
 }
 
 const handleUpdate = (bookedTicketId: string, record: TicketDetail, onRefresh: () => void) => {
@@ -25,13 +25,15 @@ const handleUpdate = (bookedTicketId: string, record: TicketDetail, onRefresh: (
     title: "Update Quantity",
     icon: <EditOutlined />,
     content: (
-      <div className="py-4">
-        <p className="mb-2">New quantity for {record.ticketName}:</p>
-        <InputNumber 
-          min={1} 
-          defaultValue={record.quantity} 
+      <div className="py-2">
+        <p className="mb-2">
+          New quantity for <strong>{record.ticketName}</strong>:
+        </p>
+        <InputNumber
+          min={1}
+          defaultValue={record.quantity}
           onChange={(val) => currentQty = val || 1} 
-          className="w-full" 
+          className="w-full"
         />
       </div>
     ),
@@ -43,11 +45,9 @@ const handleUpdate = (bookedTicketId: string, record: TicketDetail, onRefresh: (
         }
       ]);
 
-      if (res.ok) {
-        message.success("Updated");
+      if (res && res.ok) {
+        message.success("Quantity updated successfully");
         onRefresh();
-      } else {
-        message.error("Update failed");
       }
     },
   });
@@ -61,13 +61,16 @@ const handleDelete = (bookedTicketId: string, record: TicketDetail, onRefresh: (
     content: (
       <div className="py-4">
         <p className="mb-2 text-gray-600">
-          Berapa banyak tiket <strong>{record.ticketName}</strong> yang ingin dibatalkan?
+          How many ticket <strong>{record.ticketName}</strong> that want to be
+          revoked?
         </p>
-        <p className="text-xs text-gray-400 mb-2 italic">Maksimal: {record.quantity}</p>
-        <InputNumber 
-          min={1} 
-          max={record.quantity} 
-          defaultValue={1} 
+        <p className="text-xs text-gray-400 mb-2 italic">
+          Maximal: {record.quantity}
+        </p>
+        <InputNumber
+          min={1}
+          max={record.quantity}
+          defaultValue={1}
           onChange={(val) => qtyToRemove = val || 1} 
           className="w-full"
         />
@@ -89,7 +92,7 @@ const columns= (bookedTicketId: string, onRefresh: () => void):TableProps<Ticket
     title: "Ticket Name",
     dataIndex: "ticketName",
     key: "name",
-    width: '40%',
+    width: "40%",
     render: (name: string, record: any, index: number) => (
       <div className="flex gap-3">
         <span className="text-blue-600 text-xs min-w-5 bg-lightblue rounded-md px-1 py-0.5 text-center font-bold">
@@ -169,6 +172,6 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ dataSource, bookedTicketI
       rowKey="ticketCode"
     />
   );
-}
+};
 
 export default BookingDetail;
