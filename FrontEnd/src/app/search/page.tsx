@@ -74,7 +74,7 @@ export default function SearchPage() {
   }, [handleFetchTickets]);
 
   return (
-    <main className="min-h-screen w-full">
+    <main className="min-h-screen w-full bg-white">
       <Hero />
 
       <div className="max-w-11/12 mx-auto px-6 -mt-32 relative z-10">
