@@ -48,6 +48,7 @@ export default function BookingPage() {
     const userId = sessionStorage.getItem("userId");
     
     if (!userId) {
+      message.destroy();
       message.warning("Login first!");
       setBookingGroups([]);
       setLoading(false);
